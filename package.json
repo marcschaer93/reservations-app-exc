@@ -1,0 +1,23 @@
+{
+  "name": "lunchly",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest",
+    "start": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "moment": "^2.29.4",
+    "morgan": "^1.10.0",
+    "nunjucks": "^3.2.4",
+    "pg": "^8.11.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
+  }
+}
