@@ -82,6 +82,54 @@ class Customer {
   get fullName() {
     return `${this.firstName} ${this.lastName}`;
   }
+
+  static async filterBySearchTerm(searchTerm) {
+    const results = await db.query(
+      `SELECT id, 
+         first_name AS "firstName",  
+         last_name AS "lastName", 
+         phone, 
+         notes
+       FROM customers
+       WHERE lower(first_name) LIKE $1 OR lower(last_name) LIKE $1
+       ORDER BY last_name, first_name`,
+      [`%${searchTerm.toLowerCase()}%`] // Using parameterized query to avoid SQL injection
+    );
+    return results.rows.map((c) => new Customer(c));
+  }
+
+  static async filterByMostReservations() {
+    const results = await db.query(
+      `SELECT
+        c.id, 
+        c.first_name AS "firstName",  
+        c.last_name AS "lastName", 
+        c.phone, 
+        c.notes,
+        COUNT(r.customer_id) AS reservationCount
+      FROM 
+        customers c
+      LEFT jOIN
+        reservations r on c.id = r.customer_id
+      GROUP BY 
+        c.id
+      ORDER BY
+        reservationCount DESC,
+        c.last_name,
+        c.first_name
+      LIMIT
+        10
+      `
+    );
+    return results.rows.map((c) => new Customer(c));
+  }
+
+  get reservationCount() {
+    `
+    SELECT 
+      
+    `;
+  }
 }
 
 module.exports = Customer;
